@@ -11,9 +11,12 @@ vetorMetodo=[]
 vetorAtributo=[]
 
 examples = False
-
+given=False
+when=False
+then=False
 i = 1
-
+seta=False
+palavrasSeta=[]
 arquivo = open('caso01.txt', 'r')
 
 for linha in arquivo:
@@ -24,6 +27,53 @@ for words in palavrasArquivo:
     doc = nlp(words)
 
     ##pegar palavras
+    if "Given" in words:
+        given=True
+    if "When" in words:
+        given = False
+        when=True
+    if "Then" in words:
+        then=True
+        when=False
+    if "Examples" in words:
+        examples = True
+        then=False
+    if given:
+        for token in doc:
+            if token.text=="<":
+                seta=True
+            elif seta:
+                if token.text==">":
+                    seta=False
+                else:
+                    palavrasSeta.append(token.text)
+            elif token.pos_ != 'DET' and token.is_stop == False and token.pos_ != "ADJ" and \
+                    token.pos != "PRON" and token.text != "|" and token.text != "" and token.text != ":" and token.text != "Given" :
+                print(token.text)
+    if when:
+        for token in doc:
+            if token.text=="<":
+                seta=True
+            elif seta:
+                if token.text==">":
+                    seta=False
+                else:
+                    palavrasSeta.append(token.text)
+            elif token.pos_ != 'DET' and token.is_stop == False and token.pos_ != "ADJ" and \
+                    token.pos != "PRON" and token.text != "|" and token.text != "" and token.text != ":" and token.text != "Given" :
+                print(token.text)
+    if then:
+        for token in doc:
+            if token.text=="<":
+                seta=True
+            elif seta:
+                if token.text==">":
+                    seta=False
+                else:
+                    palavrasSeta.append(token.text)
+            elif token.pos_ != 'DET' and token.is_stop == False and token.pos_ != "ADJ" and \
+                    token.pos != "PRON" and token.text != "|" and token.text != "" and token.text != ":" and token.text != "Given" :
+                print(token.text)
 
 
 
@@ -31,8 +81,7 @@ for words in palavrasArquivo:
 
     ##pegar dados tabela
 
-    if "Examples" in words:
-        examples = True
+
     if examples:
         if i < 2:
             if not ("Examples" in words):
@@ -49,8 +98,8 @@ for words in palavrasArquivo:
 
 
 
-tamanhoVariaveisTabela=listaTabela.__len__()
-print(tamanhoVariaveisTabela)
+##tamanhoVariaveisTabela=listaTabela.__len__()
+##print(tamanhoVariaveisTabela)
 print(listaTabela)
 print(listaTabelaValor)
 x=0
