@@ -7,13 +7,17 @@ listaTabelaValor=[]
 
 
 vetorClasse=[]
+vetorReferenciaMetodoClasse=[]
+vetorReferenciaAtributoMetodo=[]
 vetorMetodo=[]
 vetorAtributo=[]
-
+vetorValorAtributo=[]
+entrouIfGiven=False
 examples = False
 given=False
 when=False
 then=False
+posSeta=False
 i = 1
 seta=False
 palavrasSeta=[]
@@ -46,10 +50,18 @@ for words in palavrasArquivo:
                 if token.text==">":
                     seta=False
                 else:
+                    posSeta=True
                     palavrasSeta.append(token.text)
+            elif posSeta:
+                vetorAtributo.append(token.text)
+                if not entrouIfGiven:
+                    vetorClasse.append(token.text)
             elif token.pos_ != 'DET' and token.is_stop == False and token.pos_ != "ADJ" and \
                     token.pos != "PRON" and token.text != "|" and token.text != "" and token.text != ":" and token.text != "Given" :
-                print(token.text)
+                if not(vetorClasse.__contains__(token.text)):
+                    entrouIfGiven=True
+                    vetorClasse.append(token.text)
+    posSeta=False
     if when:
         for token in doc:
             if token.text=="<":
@@ -58,10 +70,14 @@ for words in palavrasArquivo:
                 if token.text==">":
                     seta=False
                 else:
+                    posSeta=True
                     palavrasSeta.append(token.text)
+            elif posSeta:
+                if not vetorAtributo.__contains__(token.text):
+                    vetorAtributo.append(token.text)
             elif token.pos_ != 'DET' and token.is_stop == False and token.pos_ != "ADJ" and \
                     token.pos != "PRON" and token.text != "|" and token.text != "" and token.text != ":" and token.text != "Given" :
-                print(token.text)
+                vetorMetodo.append(token.text)
     if then:
         for token in doc:
             if token.text=="<":
@@ -73,13 +89,15 @@ for words in palavrasArquivo:
                     palavrasSeta.append(token.text)
             elif token.pos_ != 'DET' and token.is_stop == False and token.pos_ != "ADJ" and \
                     token.pos != "PRON" and token.text != "|" and token.text != "" and token.text != ":" and token.text != "Given" :
-                print(token.text)
+                    if not vetorAtributo.__contains__(token.text):
+                        vetorAtributo.append(token.text)
 
 
 
 
 
     ##pegar dados tabela
+
 
 
     if examples:
@@ -100,6 +118,9 @@ for words in palavrasArquivo:
 
 ##tamanhoVariaveisTabela=listaTabela.__len__()
 ##print(tamanhoVariaveisTabela)
+print(vetorClasse)
+print(vetorMetodo)
+print(vetorAtributo)
 print(listaTabela)
 print(listaTabelaValor)
 x=0
