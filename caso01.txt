@@ -8,4 +8,18 @@ Scenario Outline: eating
   Examples:
     | start | eat | left |
     |    12 |   5 |    7 |
+
+
+
+
+
+
+Scenario Outline: eating
+  Given there are <start> cakes
+  When I eat <eat> cakes
+  Then I should have <left> cakes
+
+  Examples:
+    | start | eat | left |
+    |    12 |   5 |    7 |
     |    20 |   5 |   15 |

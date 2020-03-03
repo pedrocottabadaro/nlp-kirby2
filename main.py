@@ -22,7 +22,8 @@ i = 1
 seta=False
 palavrasSeta=[]
 arquivo = open('caso01.txt', 'r')
-
+contadorMetodo=0
+contadorAtributo=0
 for linha in arquivo:
     linha = linha.strip()
     palavrasArquivo.append(linha)
@@ -40,6 +41,8 @@ for words in palavrasArquivo:
         then=True
         when=False
     if "Examples" in words:
+        contadorAtributo = contadorAtributo + 1
+        contadorMetodo = contadorMetodo + 1
         examples = True
         then=False
     if given:
@@ -78,6 +81,8 @@ for words in palavrasArquivo:
             elif token.pos_ != 'DET' and token.is_stop == False and token.pos_ != "ADJ" and \
                     token.pos != "PRON" and token.text != "|" and token.text != "" and token.text != ":" and token.text != "Given" :
                 vetorMetodo.append(token.text)
+                vetorReferenciaMetodoClasse.append(contadorMetodo)
+
     if then:
         for token in doc:
             if token.text=="<":
@@ -89,7 +94,8 @@ for words in palavrasArquivo:
                     palavrasSeta.append(token.text)
             elif token.pos_ != 'DET' and token.is_stop == False and token.pos_ != "ADJ" and \
                     token.pos != "PRON" and token.text != "|" and token.text != "" and token.text != ":" and token.text != "Given" :
-                    if not vetorAtributo.__contains__(token.text):
+                vetorReferenciaAtributoMetodo.append(contadorAtributo)
+                if not vetorAtributo.__contains__(token.text):
                         vetorAtributo.append(token.text)
 
 
@@ -116,18 +122,24 @@ for words in palavrasArquivo:
 
 
 
+
 ##tamanhoVariaveisTabela=listaTabela.__len__()
 ##print(tamanhoVariaveisTabela)
+print("classe:")
 print(vetorClasse)
+print("metodo")
 print(vetorMetodo)
+print(vetorReferenciaMetodoClasse)
+print("atributo")
 print(vetorAtributo)
+print(vetorReferenciaAtributoMetodo)
 print(listaTabela)
 print(listaTabelaValor)
-x=0
-for palavras in listaTabelaValor:
-    if(x==3):
-        x=0
-    print(listaTabela[x])
-    print(palavras)
-    x=x+1
+#x=0
+##for palavras in listaTabelaValor:
+  ##  if(x==3):
+   ##     x=0
+ #   print(listaTabela[x])
+  #  print(palavras)
+  #  x=x+1
 
