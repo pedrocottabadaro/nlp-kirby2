@@ -5,13 +5,14 @@ palavrasArquivo = []
 listaTabela=[]
 listaTabelaValor=[]
 
-
+contadorReferenciaAtributo=-1
 vetorClasse=[]
 vetorReferenciaMetodoClasse=[]
 vetorReferenciaAtributoMetodo=[]
 vetorMetodo=[]
 vetorAtributo=[]
 vetorValorAtributo=[]
+vetorReferenciaValorAtributo=[]
 entrouIfGiven=False
 examples = False
 given=False
@@ -34,17 +35,24 @@ for words in palavrasArquivo:
     ##pegar palavras
     if "Given" in words:
         given=True
+        when=False
+        examples=False
     if "When" in words:
         given = False
         when=True
+        examples=False
     if "Then" in words:
         then=True
         when=False
+        examples=False
     if "Examples" in words:
+        contadorReferenciaAtributo = contadorReferenciaAtributo + 1
         contadorAtributo = contadorAtributo + 1
         contadorMetodo = contadorMetodo + 1
         examples = True
         then=False
+        given=False
+        when=False
     if given:
         for token in doc:
             if token.text=="<":
@@ -113,33 +121,36 @@ for words in palavrasArquivo:
                     if token.text != "|" and token.text != "" and token.text != ":" and token.text != "Examples":
                         listaTabela.append(token.text)
 
+
                 i = i + 1
         else:
             for token in doc:
                 if token.pos_ == "NUM" and token.text != "|":
                     listaTabelaValor.append(token.text)
+                    vetorValorAtributo.append(token.text)
+                    vetorReferenciaValorAtributo.append(contadorReferenciaAtributo)
+
+            contadorReferenciaAtributo+1
 
 
 
 
 
-##tamanhoVariaveisTabela=listaTabela.__len__()
-##print(tamanhoVariaveisTabela)
+
 print("classe:")
 print(vetorClasse)
 print("metodo")
 print(vetorMetodo)
+print("referencia metodo a classe")
 print(vetorReferenciaMetodoClasse)
 print("atributo")
 print(vetorAtributo)
+print("referencia atributo ao metodo")
 print(vetorReferenciaAtributoMetodo)
-print(listaTabela)
-print(listaTabelaValor)
-#x=0
-##for palavras in listaTabelaValor:
-  ##  if(x==3):
-   ##     x=0
- #   print(listaTabela[x])
-  #  print(palavras)
-  #  x=x+1
+print("valor atributo")
+print(vetorValorAtributo)
+print("referencia valor ao atributo")
+print(vetorReferenciaValorAtributo)
+
+
 
