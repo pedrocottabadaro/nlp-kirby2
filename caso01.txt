@@ -1,25 +1,16 @@
 feature: counting test
 
-Scenario Outline: eating
-  Given there are <start> apples
-  When I eat <eat> apples
-  Then I should have <left> apples
+Scenario Outline: house
+  Given there is a "cake" with "chocolate topping"
+  When I "eat" the "chocolate topping"
+  Then I should have
 
   Examples:
-    | start | eat | left |
-    |    12 |   5 |    7 |
+    | eat | left |
+    |   5 |    7 |
 
 
 
 
 
 
-Scenario Outline: eating
-  Given there are <start> cakes
-  When I eat <eat> cakes
-  Then I should have <left> cakes
-
-  Examples:
-    | start | eat | left |
-    |    12 |   5 |    7 |
-    |    20 |   5 |   15 |

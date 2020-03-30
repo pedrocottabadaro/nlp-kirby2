@@ -1,10 +1,13 @@
 import spacy
 
 nlp = spacy.load('en_core_web_sm')
+segundo=False
 palavrasArquivo = []
 listaTabela=[]
 listaTabelaValor=[]
 
+palavras=""
+palavrasAtributo=""
 contadorReferenciaAtributo=-1
 vetorClasse=[]
 vetorReferenciaMetodoClasse=[]
@@ -12,6 +15,8 @@ vetorReferenciaAtributoMetodo=[]
 vetorMetodo=[]
 vetorAtributo=[]
 vetorValorAtributo=[]
+vetorSplit=[]
+vetorSplitAtributo=[]
 vetorReferenciaValorAtributo=[]
 entrouIfGiven=False
 examples = False
@@ -19,6 +24,8 @@ given=False
 when=False
 then=False
 posSeta=False
+primeiro=False
+contador=0
 i = 1
 seta=False
 palavrasSeta=[]
@@ -37,14 +44,53 @@ for words in palavrasArquivo:
         given=True
         when=False
         examples=False
+        then=False
+      
     if "When" in words:
         given = False
         when=True
         examples=False
+        then=False
+        for palavra in vetorSplit:
+            palavras = palavras + palavra
+
+        vetorClasse.append(palavras)
+
+        for palavra in vetorSplitAtributo:
+            palavrasAtributo = palavrasAtributo + palavra
+
+        if len(palavrasAtributo) > 3:
+             vetorAtributo.append(palavrasAtributo)
+        contador=0
+        palavras=""
+        palavrasAtributo=""
+        primeiro=False
+        segundo=False
+        vetorSplit=[]
+        vetorSplitAtributo=[]
+
     if "Then" in words:
         then=True
         when=False
         examples=False
+        for palavra in vetorSplit:
+            palavras = palavras + palavra
+
+        vetorMetodo.append(palavras)
+
+        for palavra in vetorSplitAtributo:
+            palavrasAtributo = palavrasAtributo + palavra
+
+        if len(palavrasAtributo) > 1:
+            vetorAtributo.append(palavrasAtributo)
+        primeiro=False
+        segundo=False
+        contador=0
+        vetorSplit = []
+        vetorSplitAtributo = []
+        palavras=""
+        palavrasAtributo=""
+
     if "Examples" in words:
         contadorReferenciaAtributo = contadorReferenciaAtributo + 1
         contadorAtributo = contadorAtributo + 1
@@ -53,9 +99,43 @@ for words in palavrasArquivo:
         then=False
         given=False
         when=False
+        for palavra in vetorSplitAtributo:
+            palavrasAtributo = palavrasAtributo + palavra
+
+        if len(palavrasAtributo) > 1:
+            vetorAtributo.append(palavrasAtributo)
     if given:
         for token in doc:
-            if token.text=="<":
+
+            if contador==0:
+
+                if token.text=='"' and not primeiro:
+                    primeiro=True
+                elif token.text == '"':
+                    primeiro=False
+                    contador=contador+1
+                    continue
+                elif primeiro:
+                    vetorSplit.append(token.text)
+
+
+
+            if not primeiro:
+                if token.text == '"' and not segundo:
+                    segundo = True
+
+                elif token.text == '"':
+                    segundo=False
+                    continue
+                elif segundo:
+                    vetorSplitAtributo.append(token.text)
+
+
+
+
+
+            """
+            if token.text=="<": 
                 seta=True
             elif seta:
                 if token.text==">":
@@ -67,14 +147,41 @@ for words in palavrasArquivo:
                 vetorAtributo.append(token.text)
                 if not entrouIfGiven:
                     vetorClasse.append(token.text)
+
             elif token.pos_ != 'DET' and token.is_stop == False and token.pos_ != "ADJ" and \
-                    token.pos != "PRON" and token.text != "|" and token.text != "" and token.text != ":" and token.text != "Given" :
+                    token.pos != "PRON" and token.text != "|" and token.text != "" and token.text != ":" and token.text != "Given" and token.text != " " :
                 if not(vetorClasse.__contains__(token.text)):
                     entrouIfGiven=True
                     vetorClasse.append(token.text)
+                    """
+
+
     posSeta=False
     if when:
         for token in doc:
+
+            if contador == 0:
+
+                if token.text == '"' and not primeiro:
+                    primeiro = True
+                elif token.text == '"':
+                    primeiro = False
+                    contador = contador + 1
+                    continue
+                elif primeiro:
+                    vetorSplit.append(token.text)
+
+            if not primeiro:
+                if token.text == '"' and not segundo:
+                    segundo = True
+
+                elif token.text == '"':
+                    segundo = False
+                    continue
+                elif segundo:
+                    vetorSplitAtributo.append(token.text)
+
+            """
             if token.text=="<":
                 seta=True
             elif seta:
@@ -90,9 +197,25 @@ for words in palavrasArquivo:
                     token.pos != "PRON" and token.text != "|" and token.text != "" and token.text != ":" and token.text != "Given" :
                 vetorMetodo.append(token.text)
                 vetorReferenciaMetodoClasse.append(contadorMetodo)
+                """
 
     if then:
         for token in doc:
+
+
+           if contador == 0:
+
+            if token.text == '"' and not primeiro:
+                primeiro = True
+            elif token.text == '"':
+                primeiro = False
+                contador = contador + 1
+                continue
+            elif primeiro:
+                vetorSplitAtributo.append(token.text)
+
+
+            """"
             if token.text=="<":
                 seta=True
             elif seta:
@@ -105,7 +228,7 @@ for words in palavrasArquivo:
                 vetorReferenciaAtributoMetodo.append(contadorAtributo)
                 if not vetorAtributo.__contains__(token.text):
                         vetorAtributo.append(token.text)
-
+                """
 
 
 
