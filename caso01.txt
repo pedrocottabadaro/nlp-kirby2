@@ -1,13 +1,10 @@
 feature: counting test
 
 Scenario Outline: house
-  Given there is a "cake" with "chocolate topping"
-  When I "eat" the "chocolate topping"
-  Then I should have
+  Given there is a "cake" with "chocolatetopping" "15"
+  When I "eat" the "chocolatetopping"
+  Then I should have "None"
 
-  Examples:
-    | eat | left |
-    |   5 |    7 |
 
 
 
