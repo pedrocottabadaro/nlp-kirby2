@@ -2,8 +2,16 @@ feature: counting test
 
 Scenario Outline: house
   Given there is a "cake" with "chocolatetopping" "15"
-  When I "eat" the "chocolatetopping"
-  Then I should have "None"
+  When I "eat" the "9"
+  Then I should have "6"
+
+
+
+  Scenario Outline: house
+  Given there is a "carro" "20"
+  When I "dirigir" the "18"
+  Then I should have "2"
+
 
 
 

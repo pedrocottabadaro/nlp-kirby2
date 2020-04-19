@@ -1,5 +1,10 @@
-
+from tkinter import *
+from tkinter import filedialog
 import spacy
+
+root=Tk()
+root.filename = filedialog.askopenfilename(initialdir="/C:/Users/pedro/Desktop/Tudo/bolsajairo/nlp-kirby2", title="Select A File", filetypes=(("text files", "*.txt"),("all files", "*.*")))
+
 
 
 nlp = spacy.load('en_core_web_sm')
@@ -18,8 +23,10 @@ vetorGiven=[]
 vetorWhen=[]
 vetorThen=[]
 vetorAnd=[]
-vetorParametro=[]
 
+
+
+vetorParametro=[]
 vetorClasse = []
 vetorMetodo = []
 vetorAtributo = []
@@ -29,7 +36,7 @@ vetorValorAtributo = []
 
 
 
-arquivo = open('caso01.txt', 'r')
+arquivo = open(root.filename, 'r')
 contadorClasse=0
 contadorMetodo = 0
 contadorParametro=0
@@ -72,9 +79,11 @@ metadeAtributo=""
 possuiAtributo=False
 percorreu=False
 possuiClasse=False
+
+
+
 for x in range(len(vetorGiven)):
     vetaux=vetorGiven[x].split(" ")
-
 
     for y in vetaux:
 
@@ -151,7 +160,7 @@ print("referencia metodo a classe")
 print(vetorReferenciaMetodoClasse)
 print("Parametros")
 print(vetorParametro)
-print("referencia parametros")
+print("referencia parametros ao metodo")
 print(vetorReferenciaParametroMetodo)
 print("atributo")
 print(vetorAtributo)
@@ -159,6 +168,5 @@ print("referencia atributo a Classe")
 print(vetorReferenciaAtributoClasse)
 print("valor atributo")
 print(vetorValorAtributo)
-
 
 

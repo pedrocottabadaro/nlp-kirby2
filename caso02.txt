@@ -1,0 +1,12 @@
+feature: counting test
+
+Scenario Outline: house
+  Given there is a "house" with "15" "doors"
+  When I "remove" "9"
+  Then I should have "6"
+
+
+
+
+
+
